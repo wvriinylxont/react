@@ -23,6 +23,7 @@ function ContactUpdate() {
     setContact({ ...contact, [e.target.name]: e.target.value });
   };
 
+  // 사진 변경 할 수 있는 handleFileChange
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setPhoto(file);
