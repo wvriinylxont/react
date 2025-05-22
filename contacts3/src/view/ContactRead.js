@@ -41,7 +41,7 @@ function ContactRead() {
             </tr>
         </tbody>
       </table>
-      <button className='btn btn-success' onClick={()=>navigate(`update?no=${no}`)}>변경하기</button>
+      <button className='btn btn-success' onClick={()=>navigate(`/update?no=${no}`)}>변경하기</button>
       &nbsp;&nbsp;&nbsp;
       <button className='btn btn-danger' onClick={remove}>삭제하기</button>
     </>

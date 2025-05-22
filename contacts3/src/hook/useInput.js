@@ -15,7 +15,7 @@ function useInput(msg) {
     }
     return true;
   };
-  return { value, message, change, check };
+  return { value, message, change, check, setValue };
 }
 
 export default useInput;
