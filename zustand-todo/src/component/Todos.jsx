@@ -9,7 +9,7 @@ function Todos() {
       <table className="table table-border">
         <thead>
             <tr>
-                <th></th>
+                <th>번호</th>
                 <th>할일</th>
                 <th>작성일</th>
                 <th>완료일</th>
