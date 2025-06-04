@@ -4,13 +4,14 @@ import usePostStore from "../../stores/usePostStore";
 import { readAll } from "../../utils/postApi";
 import Posts from "../../components/posts/Posts";
 import Paginations from "../../components/posts/Paginations";
-import { Pagination } from "react-bootstrap";
+import { Alert, Pagination } from "react-bootstrap";
 import LoadingSpinner from "../../components/commons/LoadingSpinner";
+import { AsyncStatus } from "../../utils/constant";
 
 function PostList() {
   const [params] = useSearchParams();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  // 읽기 상태를 저장 : idle -> loading -> success 또는 fail
+  const [loadingStatus, setLoadindStatus] = useState(AsyncStatus.IDLE);
 
   // store에 저장된 posts 상태와 그 상태를 변경할 setter 함수를 가져온다
   const posts = usePostStore((state) => state.posts);
@@ -21,7 +22,7 @@ function PostList() {
   if (isNaN(pageno) || pageno < 1) pageno = 1;
 
   useEffect(() => {
-    setLoading(true);
+    setLoadindStatus(AsyncStatus.LOADING);
     // 서버에서 posts를 읽어와서 store에 저장
     async function fetch() {
       try {
@@ -31,19 +32,20 @@ function PostList() {
         const { posts, ...rest } = response.data;
         setPosts(posts);
         setPagination(rest);
+        setLoadindStatus(AsyncStatus.SUCCESS);
       } catch (err) {
-        setError(err.message);
+        setLoadindStatus(AsyncStatus.FAIL);
         console.log(err);
-      } finally {
-        setLoading(false);
       }
     }
     fetch();
   }, [pageno]);
 
-  if(error!=='') return <div>{error}</div>
-  if (loading || posts === null) return <LoadingSpinner />;
-  if (posts.length === 0) return <div>게시글이 없습니다</div>;
+  if(loadingStatus===AsyncStatus.IDLE || loadingStatus===AsyncStatus.LOADING)
+    return <LoadingSpinner />;
+  if (loadingStatus===AsyncStatus.FAIL)
+    // Alert 부트스트랩
+    return <Alert variant="danger">서버가 응답하지 않습니다</Alert>
 
   return (
     <div>
