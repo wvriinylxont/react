@@ -8,14 +8,12 @@ import BlockButton from "../../components/commons/BlockButton";
 import useProfile from "../../hooks/useProfile";
 import ProfileField from "../../components/members/ProfileFieid";
 import { AsyncStatus } from "../../utils/constant";
-import { useNavigate } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 import { signup } from "../../utils/memberApi";
 
 // 아이디, 비번, 비번확인, 이메일
 function MemberSignup() {
   const [submittingStatus, setSubmittingStatus] = useState(AsyncStatus.IDLE);
-  const navigate = useNavigate();
 
     const vProfile = useProfile();
   const vPassword = usePassword();
@@ -44,13 +42,15 @@ function MemberSignup() {
     try {
         const response = await signup(formData);
         setSubmittingStatus(AsyncStatus.SUCCESS);
-        // navigate가 되도 현재 컴포넌트 렌더링은 계속 된다
-        navigate("/member/login");
-        return;
     } catch(err) {
       setSubmittingStatus(AsyncStatus.FAIL);
         console.log(err);
     }
+  }
+  if(submittingStatus===AsyncStatus.SUCCESS) {
+    return (
+      <Alert variant="success">가입 확인 메일을 보냈습니다. 이메일을 확인하세요</Alert>
+    )
   }
   
   return (

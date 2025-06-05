@@ -51,6 +51,9 @@ function Nav() {
           <li>
             <Link to="/member/find-username">아이디 찾기</Link>
           </li>
+          <li>
+            <Link to="/member/find-password">비밀번호 찾기</Link>
+          </li>
         </ul>
       </nav>
     );
