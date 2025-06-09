@@ -6,7 +6,7 @@ import useConfirmPassword from "../../hooks/useConfirmPassword";
 import useEmail from "../../hooks/useEmail";
 import BlockButton from "../../components/commons/BlockButton";
 import useProfile from "../../hooks/useProfile";
-import ProfileField from "../../components/members/ProfileFieid";
+import ProfileField from "../../components/members/ProfileField";
 import { AsyncStatus } from "../../utils/constant";
 import { Alert } from "react-bootstrap";
 import { signup } from "../../utils/memberApi";
