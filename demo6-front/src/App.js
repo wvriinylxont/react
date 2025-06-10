@@ -19,6 +19,9 @@ import MemberFindPassword from "./pages/members/MemberFindPassword";
 import MemberRead from "./pages/members/MemberRead";
 import MemberCheckPassword from "./pages/members/MemberCheckPassword";
 import MemberChangePassword from "./pages/members/MemberChangePassword";
+import PostRead from "./pages/posts/PostRead";
+import PostWrite from "./pages/posts/PostWrite";
+import PostUpdate from "./pages/posts/PostUpdate";
 
 function App() {
   const checkAuth = useAuthStore(state => state.checkAuth);
@@ -37,6 +40,9 @@ function App() {
         <section>
           <Routes>
             <Route path="/" element={<PostList />} />
+            <Route path="/post/read" element={<PostRead />} />
+            <Route path="/post/write" element={<PublicRoute element={<PostWrite />} />} />
+            <Route path="/post/update" element={<PublicRoute element={<PostUpdate />} />} />
             <Route path="/member/signup" element={<PublicRoute element={<MemberSignup />} />} />
             <Route path="/member/verified" element={<PublicRoute element={<MemberVerified />} />} />
             <Route path="/member/login" element={<PublicRoute element={<MemberLogin />} />} />
