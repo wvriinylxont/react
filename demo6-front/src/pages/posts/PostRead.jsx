@@ -1,11 +1,13 @@
 import React from 'react'
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import LoadingSpinner from '../../components/commons/LoadingSpinner';
-import { Alert } from 'react-bootstrap';
+import { Alert, Button } from 'react-bootstrap';
 import useAuthStore from '../../stores/useAuthStore';
 import useSWR from 'swr';
 import { erase, read } from '../../utils/postApi';
 import DOMPurify from 'dompurify';
+import CommentWrite from '../../components/comments/CommentWrite';
+import CommentList from '../../components/comments/CommentList';
 
 function PostRead() {
     // 1. 필요한 기능 가져오기
@@ -16,7 +18,7 @@ function PostRead() {
     const [params] = useSearchParams();
     const pno = parseInt(params.get('pno'));
     // 글을 읽어와서 post란 이름으로 캐시해라. pno가 바뀌면 캐시를 갱신해라.
-    const {data, error, isLoading} = useSWR(['post'], ()=>read(pno), {revalidateOnFocus: false});
+    const {data, error, isLoading} = useSWR(['post', pno], ()=>read(pno), {revalidateOnFocus: false});
 
     // 리액트 컴포넌트의 기능은 렌더링(return JSX) + 기타(side effect)
     // 렌더링에 영향을 주는 side effect의 경우(상태를 변경, 화면을 변경)가 렌더링 도중에 실행되어서는 안된다 -> 무한 재렌더링 발생
@@ -67,7 +69,19 @@ function PostRead() {
             리액트에서 innerHTML을 대신하는 속성이 dangerouslySetInnerHTML -> 이름이 강력한 경고
          */}
         <div style={{minHeight:600, backgroundColor:'#f1f1f1', padding:5}} dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(data.content)}}>
-
+        </div>
+        <div>
+          {
+            isWriter && 
+            <div>
+              <Button variant='success'>변경으로</Button>
+              <Button variant='danger' onClick={doDeletePost}>삭제하기</Button>
+            </div>
+          }
+        </div>
+        <div className='mb-3 mt-3'>
+          {isLogin && <CommentWrite pno={pno} />}
+          <CommentList comments={data.comments} />
         </div>
     </div>
   )
