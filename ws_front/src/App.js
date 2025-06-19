@@ -1,36 +1,38 @@
-import { Client } from "@stomp/stompjs";
-import { useEffect, useRef } from "react";
-import SockJS from "sockjs-client";
+import React, { useEffect } from 'react'
+import useAppStore from './stores/useAppStore'
+import { Routes, useLocation } from 'react-router-dom';
+import { ToastContainer } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
-// 웹소켓 접속하기
 function App() {
-  // 웹소켓 연결을 일반 변수로 만들면 재렌더링될 때마다 다시 연결한다
-  // userState 사용하는 이유 : 일반 변수는 재렌더링될 때마다 새로 만들어진다(값이 보존되지 X)
-  // 만약 보존되야 하는데 화면에 찍을 필요는 없다
+    // 훅을 통채로 가져온 다음 checkAuth, socket을 꺼낸다
+    // 훅에 있는 어떤 상태라도 변경되면 재렌더링
+    const {checkAuth, socket} = useAppStore();
 
-  // useRef는 랜더링하지 않는 상태
-  const socket = useRef(null);
+    // 훅에 checkAuth만 가져온다
+    // const checkAuth = useAppStore(state => state.checkAuth);
 
-  useEffect(()=>{
-    // STOMP 연결 객체를 설정 정보를 가지고 생성
-    const client = new Client({
-      // 서버에 연결한 다음 웹소켓 객체를 리턴하는 함수 등록
-    webSocketFactory: () => new SockJS("http://localhost:8080/ws"),
-    // 서버가 연결되었을 때 실행할 콜백을 등록
-    onConnect: () => {
-      // /sub/job1을 수신. 서버에서 수신한 message를 console로 출력
-      client.subscribe("/sub/job1", (message)=>{console.log(message.body)})
-      }
-    });
+    // 주소가 바뀔때마다 로그인 정보를 갱신해라
+    const location = useLocation();
+    useEffect(()=>checkAuth(), [location]);
 
-    // 실제 연결을 수행
-    client.activate();
-    // socket에 저장
-    socket.current = client;
-  }, [])
+    // 로그인 했으면 toast를 띄울 subscribe를 등록
+    useEffect(()=>{
+        if(!socket)
+            return;
+        socket.subscribe('/user/sub/job3', (message)=>{
+            toast.success("🦄 메시지가 도착했습니다 !", {position: "top-right",autoClose: false,hideProgressBar: false,closeOnClick: false, pauseOnHover: true,draggable: true, progress: undefined,theme: "colored",transition: Bounce})
+            })
+    }, [socket])
+
   return (
-    <div>웹소켓 수신 예제</div>
-  );
+    <div>
+        <Routes>
+
+        </Routes>
+        <ToastContainer />
+    </div>
+  )
 }
 
-export default App;
+export default App
