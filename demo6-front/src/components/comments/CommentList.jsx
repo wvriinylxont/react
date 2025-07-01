@@ -12,7 +12,7 @@ function CommentList({comments}) {
         {
             comments.map(c=>{
                 return (
-                    <div key={c.cno}>
+                    <div key={c.cno} style={{borderBottom:'1px solid #eee', padding:10}}>
                         <div style={{display:'flex', justifyContent:'space-between'}}>
                             <div>
                                 <strong>{c.writer}</strong>&nbsp;&nbsp;

@@ -8,6 +8,7 @@ import { erase, read } from '../../utils/postApi';
 import DOMPurify from 'dompurify';
 import CommentWrite from '../../components/comments/CommentWrite';
 import CommentList from '../../components/comments/CommentList';
+import GoodButton from '../../components/posts/GoodButton';
 
 function PostRead() {
     // 1. 필요한 기능 가져오기
@@ -26,6 +27,7 @@ function PostRead() {
     // 왜 ?? 리액트가 useRffect와 이벤트 핸들러 코드는 화면 렌더링이 끝난 다음에 실행되는 것을 보장
     // if(isNaN(pno)) navigate("/"); 
 
+    // 파생 속성
     // 3. 로그인 여부 : 댓글 작성이 보인다
     // 로그인 여부 && 작성자 여부 : 글 작성자면 변경, 삭제. 글 작성자가 아니면 추천
     const isLogin = username!==undefined && username!=null;
@@ -58,7 +60,7 @@ function PostRead() {
                 <span> 추천 </span>
                 <span>{data.goodCnt} </span>
             </div>
-            { (isLogin && !isWriter) && <button>좋아요</button>}
+            { (isLogin && !isWriter) && <GoodButton pno={pno} goodCnt={data.goodCnt} />}
         </div>
         {/* 자바스크립트에서 innerTEXT='<b>안녕</b>' -> <b>안녕</b> html이 적용되지 않는다(안전)
                             innerTEXT='<script>alert('안녕')</script>' -> html을 글자로 취급해서 그대로 화면에 출력
@@ -74,7 +76,7 @@ function PostRead() {
           {
             isWriter && 
             <div>
-              <Button variant='success'>변경으로</Button>
+              <Button variant='success' onClick={()=>navigate(`/post/update?pno=${pno}`)}>변경으로</Button>
               <Button variant='danger' onClick={doDeletePost}>삭제하기</Button>
             </div>
           }

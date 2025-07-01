@@ -18,3 +18,9 @@ export const writeComment = (object) => api.post('/api/comments/new', new URLSea
 
 // get, delete는 파라미터를 querystring으로 넘겨야한다
 export const deleteComment = (cno,pno) => api.delete(`/api/comments?cno=${cno}&pno=${pno}`);
+
+export const good = (pno) => api.put(`/api/posts/good?pno=${pno}`);
+
+export const write = (object) => api.post('/api/posts/new', new URLSearchParams(object));
+
+export const update = (object) => api.put('/api/posts/post', new URLSearchParams(object));

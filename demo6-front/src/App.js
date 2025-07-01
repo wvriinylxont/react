@@ -41,8 +41,8 @@ function App() {
           <Routes>
             <Route path="/" element={<PostList />} />
             <Route path="/post/read" element={<PostRead />} />
-            <Route path="/post/write" element={<PublicRoute element={<PostWrite />} />} />
-            <Route path="/post/update" element={<PublicRoute element={<PostUpdate />} />} />
+            <Route path="/post/write" element={<PrivateRoute element={<PostWrite />} />} />
+            <Route path="/post/update" element={<PrivateRoute element={<PostUpdate />} />} />
             <Route path="/member/signup" element={<PublicRoute element={<MemberSignup />} />} />
             <Route path="/member/verified" element={<PublicRoute element={<MemberVerified />} />} />
             <Route path="/member/login" element={<PublicRoute element={<MemberLogin />} />} />
